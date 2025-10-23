@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Viacpohľadová rekonštrukcia videa — one‑pager</title>
+  <meta name="description" content="Multi‑view video reconstruction using photogrammetry and Gaussian splatting — projektový one‑pager" />
+  <style>
+    :root {
+      --bg: hsl(225 20% 12%);
+      --bg-2: hsl(225 22% 16%);
+      --card: hsl(0 0% 100%);
+      --text: hsl(222 20% 10%);
+      --muted: hsl(222 10% 45%);
+      --accent: hsl(262 76% 57%);
+      --accent-2: hsl(198 88% 48%);
+      --radius: 18px;
+      --shadow: 0 10px 30px hsl(220 40% 2% / .35);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --card: hsl(222 14% 16%); --text: hsl(0 0% 98%); --muted: hsl(220 10% 70%); }
+    }
+    html, body {
+      margin: 0;
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1400px 900px at 80% -10%, hsl(262 90% 60% / .25), transparent 60%),
+        radial-gradient(1200px 800px at -10% 110%, hsl(198 90% 55% / .25), transparent 60%),
+        linear-gradient(180deg, var(--bg), var(--bg-2));
+      background-attachment: fixed, fixed, fixed;
+      background-repeat: no-repeat;
+      display: grid;
+      place-items: start center;
+      min-height: 100svh;
+      padding: 24px;
+      overflow-x: hidden;
+    }
+    body {
+      margin: 0;
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1400px 900px at 80% -10%, hsl(262 90% 60% / .25), transparent 60%),
+        radial-gradient(1200px 800px at -10% 110%, hsl(198 90% 55% / .25), transparent 60%),
+        linear-gradient(180deg, var(--bg), var(--bg-2));
+      background-attachment: fixed, fixed, fixed;
+      background-repeat: no-repeat;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .card {
+      width: min(920px, 100%);
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid hsl(220 12% 90% / .35);
+    }
+    @media (prefers-color-scheme: dark) {
+      .card { border-color: hsl(220 12% 20% / .6); }
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, hsl(262 76% 57% / .10), hsl(198 88% 48% / .10));
+      pointer-events: none;
+    }
+    .header {
+      padding: 28px 28px 18px;
+      background: linear-gradient(135deg, hsl(262 76% 57% / .12), transparent 40%);
+      border-bottom: 1px solid hsl(220 12% 90% / .4);
+    }
+    @media (prefers-color-scheme: dark) {
+      .header { border-bottom-color: hsl(220 12% 20% / .6); }
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: clamp(1.35rem, 2.6vw, 2rem);
+      letter-spacing: .2px;
+    }
+    .meta { color: var(--muted); font-size: .98rem; display: grid; gap: 4px; }
+    .row { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; }
+    .label { color: var(--muted); margin-right: 6px; }
+    .tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 10px; border-radius: 999px; font-size: .82rem; font-weight: 600;
+      background: linear-gradient(135deg, hsl(262 76% 57% / .14), hsl(198 88% 48% / .14));
+      border: 1px solid hsl(220 12% 90% / .5);
+    }
+    @media (prefers-color-scheme: dark) {
+      .tag { border-color: hsl(220 12% 20% / .7); }
+    }
+    .body { padding: 22px 28px 28px; display: grid; gap: 22px; }
+    h2 { font-size: 1.05rem; margin: 16px 0 10px; letter-spacing: .15px; }
+    p { margin: 0; }
+    ul { margin: 8px 0 0 0; padding-left: 18px; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .mailto { color: var(--muted); text-decoration: none; border-bottom: 1px dotted hsl(220 12% 60% / .6); }
+    .mailto:hover { color: var(--accent); border-bottom-color: currentColor; }
+    .footer { padding: 16px 28px 26px; color: var(--muted); font-size: .9rem; border-top: 1px dashed hsl(220 12% 90% / .5); }
+    @media (prefers-color-scheme: dark) {
+      .footer { border-top-color: hsl(220 12% 20% / .6); }
+    }
+    /* Print-friendly */
+    @media print {
+      body { background: white; }
+      .card { box-shadow: none; border: 1px solid #ddd; }
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <header class="header">
+      <h1>Viacpohľadová rekonštrukcia videa (fotogrametria + Gaussian splatting)</h1>
+      <div class="meta">
+        <div class="row"><span class="label">Študent:</span> <strong>Artem Horshkov</strong> (2INF1) — <a class="mailto" href="mailto:email@example.com">[e‑mail]</a></div>
+        <div class="row"><span class="label">Školiteľ:</span> <strong>RNDr. Martin Madaras, PhD.</strong> — <a class="mailto" href="mailto:email@example.com">[e‑mail]</a></div>
+        <div class="row" aria-label="Akademický rok">
+          <span class="label">Akademický rok:</span>
+          <span>2025/26</span>
+          <span class="tag" title="Zimný aj letný semester">Zima / Leto</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="body">
+      <section>
+        <h2>Názov (EN)</h2>
+        <p><strong>Multi‑view video reconstruction using photogrammetry and Gaussian splatting</strong></p>
+      </section>
+
+      <section>
+        <h2>Cieľ (stručne)</h2>
+        <p>Z viacero synchronizovaných pohľadov vytvoriť pre každý časový okamih riedke 3D mračná bodov (fotogrametria) a následne ich aproximovať 3D Gaussian splattingom; vyhodnotiť kvalitu vs. rýchlosť/VRAM.</p>
+      </section>
+
+      <section>
+        <h2>Plán (MVP)</h2>
+        <p><em>doplním po konzultácii</em></p>
+      </section>
+
+      <section>
+        <h2>Artefakty (priebežne)</h2>
+        <ul>
+          <li>Repozitár kódu: <em>link čoskoro</em></li>
+          <li>Dátové ukážky / reporty: <em>doplním po konzultácii</em></li>
+        </ul>
+      </section>
+    </section>
+
+    <footer class="footer">
+      <span>Posledná úprava: <time id="last-updated"></time></span>
+    </footer>
+  </main>
+
+  <script>
+    // Fill the "last updated" time in user's locale
+    const el = document.getElementById('last-updated');
+    try {
+      const dt = new Date();
+      const fmt = new Intl.DateTimeFormat(navigator.language || 'sk-SK', {
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit'
+      });
+      el.textContent = fmt.format(dt);
+    } catch { el.textContent = new Date().toLocaleString(); }
+  </script>
+</body>
+</html>
